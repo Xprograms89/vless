@@ -1,30 +1,18 @@
-vless://4d8132cb-f4e3-428c-91ff-2b4f7a868551@84.23.52.120:28448?alpn=h2%2Chttp%2F1.1&path=%2Flovelive&security=tls&sni=pl.sparxiecn.com&type=ws&fp=safari#[878ms
-
-vless://4d8132cb-f4e3-428c-91ff-2b4f7a868551@84.23.52.120:28448?alpn=h2%2Chttp%2F1.1&path=%2Flovelive&security=tls&sni=pl.sparxiecn.com&type=ws&fp=firefox#[852ms Россия RU 🇷🇺 @vlesstrojan]%20t.me%2Frjsxrd
-
-# Date/Time: 05.11.26 / 18:15
+* Универсальный VLESS
+Обновление каждые 12 часов
+# Date/Time: 05.11.26 / 18:19
 # Количество: 14
+vless://4d8132cb-f4e3-428c-91ff-2b4f7a868551@84.23.52.120:28448?alpn=h2%2Chttp%2F1.1&path=%2Flovelive&security=tls&sni=pl.sparxiecn.com&type=ws&fp=safari#[878ms
+vless://4d8132cb-f4e3-428c-91ff-2b4f7a868551@84.23.52.120:28448?alpn=h2%2Chttp%2F1.1&path=%2Flovelive&security=tls&sni=pl.sparxiecn.com&type=ws&fp=firefox#[852ms Россия RU 🇷🇺 @vlesstrojan]%20t.me%2Frjsxrd
 vless://4d8132cb-f4e3-428c-91ff-2b4f7a868551@84.23.52.120:28449?alpn=h2%2Chttp%2F1.1&path=%2Flovelive&security=tls&sni=pl.sparxiecn.com&type=ws&fp=firefox#[2265ms
-
 vless://66eb3a53-975a-44c2-bc3e-5ea6c11b8ccf@147.45.126.220:443?encryption=none&fp=firefox&security=tls&serviceName=assets&sni=pol.qikbro.com&type=grpc#🇵🇱 Польша 19 GLOBAL CONNECTIVITY SOLUTIONS LLP%20t.me%2Frjsxrd
-
 vless://4d8132cb-f4e3-428c-91ff-2b4f7a868551@84.23.52.120:28453?alpn=h2%2Chttp%2F1.1&path=%2Flovelive&security=tls&sni=pl.sparxiecn.com&type=ws&fp=firefox#15 %7C WS%2BTLS %7C SNI%3A pl.sparxiecn.com %7C IN%3A RU OUT%3A PL %7C RATING%3A 3%2F10%20t.me%2Frjsxrd
-
 vless://4d8132cb-f4e3-428c-91ff-2b4f7a868551@84.23.52.120:28452?alpn=h2%2Chttp%2F1.1&path=%2Flovelive&security=tls&sni=pl.sparxiecn.com&type=ws&fp=chrome#[922ms
-
 vless://e3149c82-00f6-4227-b2c0-b78f1dd81279@fast.145779.xyz:2053?security=tls&type=ws&path=%2Fws-tesla&host=fast.145779.xyz&packetEncoding=xudp&sni=fast.145779.xyz&fp=chrome&encryption=none#🇺🇸[openproxylist.com]
-
 vless://4d8132cb-f4e3-428c-91ff-2b4f7a868551@84.23.52.120:28449?alpn=h2%2Chttp%2F1.1&path=%2Flovelive&security=tls&sni=pl.sparxiecn.com&type=ws&fp=chrome#[1437ms
-
 vless://4d8132cb-f4e3-428c-91ff-2b4f7a868551@84.23.52.120:28449?security=tls&sni=pl.sparxiecn.com&alpn=h2%2Chttp%2F1.1&fp=firefox&type=ws&path=%2Flovelive#%F0%9F%87%B5%F0%9F%87%B1%20AetrisVPN%20t.me%2Frjsxrd
-
 vless://4d8132cb-f4e3-428c-91ff-2b4f7a868551@84.23.52.120:28450?alpn=h2%2Chttp%2F1.1&path=%2Flovelive&security=tls&sni=pl.sparxiecn.com&type=ws&fp=safari#14
-
 vless://4d8132cb-f4e3-428c-91ff-2b4f7a868551@84.23.52.120:28450?security=tls&sni=pl.sparxiecn.com&alpn=h2%2Chttp%2F1.1&fp=firefox&type=ws&path=%2Flovelive#%F0%9F%87%B5%F0%9F%87%B1%20AetrisVPN%20t.me%2Frjsxrd
-
 vless://4d8132cb-f4e3-428c-91ff-2b4f7a868551@84.23.52.120:28449?&security=tls&fp=chrome&sni=pl.sparxiecn.com&type=ws&headerType=&host=pl.sparxiecn.com&path=%2Flovelive#%21 17 %7C WS%2BTLS %7C SNI%3A pl.sparxiecn.com %7C IN%3A RU OUT%3A PL %7C RATING%3A 3%2F10%20t.me%2Frjsxrd
-
 vless://689a62e4-37e7-41de-9e6a-f2a56368c9e2@185.72.11.43:443?encryption=none&flow=xtls-rprx-vision&fp=firefox&security=tls&sni=rs8.speedtestinternet.link&type=tcp#🇷🇸 Сербия 5 Maxim Azarov trading as eServer%20t.me%2Frjsxrd
-
 vless://c9bd639a-a6b9-4448-9421-cef0ae0826cd@147.45.126.220:443?encryption=none&fp=firefox&security=tls&serviceName=assets&sni=pol.qikbro.com&type=grpc#🇵🇱 Польша 18 GLOBAL CONNECTIVITY SOLUTIONS LLP%20t.me%2Frjsxrd
-
