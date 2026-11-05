@@ -1,6 +1,4 @@
-* Универсальный VLESS
-Обновление каждые 12 часов
-# Date/Time: 05.11.26 / 18:19
+# Date/Time: 05.11.26 / 18:21
 # Количество: 14
 vless://4d8132cb-f4e3-428c-91ff-2b4f7a868551@84.23.52.120:28448?alpn=h2%2Chttp%2F1.1&path=%2Flovelive&security=tls&sni=pl.sparxiecn.com&type=ws&fp=safari#[878ms
 vless://4d8132cb-f4e3-428c-91ff-2b4f7a868551@84.23.52.120:28448?alpn=h2%2Chttp%2F1.1&path=%2Flovelive&security=tls&sni=pl.sparxiecn.com&type=ws&fp=firefox#[852ms Россия RU 🇷🇺 @vlesstrojan]%20t.me%2Frjsxrd
