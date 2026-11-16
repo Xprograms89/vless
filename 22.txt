@@ -1,0 +1,117 @@
+@echo off
+setlocal enabledelayedexpansion
+chcp 65001 >nul
+
+:: Очистка логов и конфигов перед стартом
+del /s /q ovpnconnector.log >nul 2>&1
+del /s /q ovpnconnector.cfg >nul 2>&1
+
+:: Переходим в папку с батником
+cd /d "%~dp0"
+
+:: 1. Проверяем папку Config
+if not exist "%~dp0Config" (
+    echo [ОШИБКА] Папка Config не найдена!
+    pause
+    exit /b
+)
+
+:: 2. Собираем .ovpn файлы
+set count=0
+for %%f in ("%~dp0Config\*.ovpn") do (
+    set /a count+=1
+    set "file[!count!]=%%f"
+    set "name[!count!]=%%~nxf"
+)
+
+if %count%==0 (
+    echo [ОШИБКА] В папке Config нет файлов .ovpn
+    pause
+    exit /b
+)
+
+:: 3. Принудительно регистрируем службу службы
+ovpnconnector.exe install >nul 2>&1
+
+:menu
+cls
+echo ==================================================
+echo           Выбор VPN-профиля для подключения
+echo ==================================================
+echo.
+echo Доступные профили:
+for /l %%i in (1,1,%count%) do (
+    echo   [%%i] !name[%%i]!
+)
+echo.
+echo   [E] Отключить VPN и выйти
+echo ==================================================
+echo.
+
+set /p choice="Выберите номер профиля (или E): "
+
+:: Проверка на выход
+if /i "%choice%"=="E" goto disconnect_and_exit
+
+:: Валидация ввода (проверяем, что введено число и оно в диапазоне)
+echo %choice%| findstr /r "^[0-9]*$" >nul
+if errorlevel 1 (
+    echo [ОШИБКА] Неверный ввод. Пожалуйста, выберите номер из списка.
+    timeout /t 2 >nul
+    goto menu
+)
+if %choice% lss 1 (
+    echo [ОШИБКА] Неверный номер.
+    timeout /t 2 >nul
+    goto menu
+)
+if %choice% gtr %count% (
+    echo [ОШИБКА] Такого профиля не существует.
+    timeout /t 2 >nul
+    goto menu
+)
+
+:: 4. Подключение выбранного профиля
+cls
+echo ==================================================
+echo [ Текущий профиль: !name[%choice%]! ]
+echo ==================================================
+echo Установка конфигурации...
+ovpnconnector.exe set-config profile "!file[%choice%]!" >nul
+echo Запуск VPN...
+ovpnconnector.exe start >nul
+echo Статус: Подключение запущено в фоне.
+
+:: --- БЛОК ОЖИДАНИЯ АКТИВАЦИИ АДАПТЕРА ---
+echo Ожидание инициализации адаптера (макс. 5 сек)...
+set connected=0
+for /l %%i in (1,1,5) do (
+    if !connected!==0 (
+        wmic path win32_networkadapter where "Description like '%%TAP-Windows%%' or Description like '%%OpenVPN%%'" get NetEnabled 2>nul | findstr /i "TRUE" >nul
+        if !errorlevel!==0 (
+            set connected=1
+            echo [ОК] Сетевой адаптер VPN успешно подключен!
+        ) else (
+            timeout /t 1 >nul
+        )
+    )
+)
+
+if !connected!==0 (
+    echo [ПРЕДУПРЕЖДЕНИЕ] Время ожидания истекло. Сетевой адаптер не активировался.
+)
+:: -----------------------------------
+
+echo.
+echo --------------------------------------------------
+echo Нажмите любую клавишу, чтобы вернуться в меню...
+pause >nul
+goto menu
+
+:disconnect_and_exit
+echo.
+echo Отключение VPN службы...
+ovpnconnector.exe stop >nul 2>&1
+echo Выход...
+timeout /t 2 >nul
+exit /b
