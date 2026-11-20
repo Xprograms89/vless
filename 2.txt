@@ -1,0 +1,148 @@
+@echo off
+setlocal enabledelayedexpansion
+chcp 65001 >nul
+
+:: 0. Проверка прав администратора и автоматический перезапуск с ними
+net session >nul 2>&1
+if %errorlevel% neq 0 (
+    echo Запрос прав администратора...
+    powershell -Command "Start-Process '%~f0' -Verb RunAs"
+    exit /b
+)
+
+:: Переходим в папку со скриптом СРАЗУ
+cd /d "%~dp0"
+
+:: Останавливаем зависшие процессы перед очисткой
+ovpnconnector.exe stop >nul 2>&1
+timeout /t 1 /nobreak >nul
+
+:: Очистка логов и конфигов в правильной папке
+del /q ovpnconnector.log >nul 2>&1
+del /q ovpnconnector.cfg >nul 2>&1
+
+:: 1. Проверяем папку Config и наличие утилиты
+if not exist "%~dp0ovpnconnector.exe" (
+    echo [ОШИБКА] Файл ovpnconnector.exe не найден рядом со скриптом!
+    pause
+    exit /b
+)
+
+if not exist "%~dp0Config" (
+    echo [ОШИБКА] Папка Config не найдена!
+    pause
+    exit /b
+)
+
+:: 2. Собираем .ovpn файлы
+set count=0
+for %%f in ("%~dp0Config\*.ovpn") do (
+    set /a count+=1
+    set "file[!count!]=%%f"
+    set "name[!count!]=%%~nxf"
+)
+
+if %count%==0 (
+    echo [ОШИБКА] В папке Config нет файлов .ovpn
+    pause
+    exit /b
+)
+
+:: 3. Регистрируем службу один раз при запуске
+ovpnconnector.exe install >nul 2>&1
+
+:menu
+cls
+echo ==================================================
+echo           Выбор VPN-профиля для подключения
+echo ==================================================
+echo.
+echo Доступные профили:
+for /l %%i in (1,1,%count%) do (
+    echo   [%%i] !name[%%i]!
+)
+echo.
+echo   [D] Отключить текущий VPN
+echo   [E] Отключить VPN и выйти
+echo ==================================================
+echo.
+
+set "choice="
+set /p choice="Выберите номер профиля (или D/E): "
+
+if /i "%choice%"=="E" goto disconnect_and_exit
+if /i "%choice%"=="D" (
+    echo Остановка VPN...
+    ovpnconnector.exe stop >nul 2>&1
+    timeout /t 2 /nobreak >nul
+    goto menu
+)
+
+:: Валидация ввода
+echo %choice%| findstr /r "^[0-9][0-9]*$" >nul
+if errorlevel 1 goto invalid_input
+if %choice% lss 1 goto invalid_input
+if %choice% gtr %count% goto invalid_input
+
+:: 4. Подключение выбранного профиля
+cls
+echo ==================================================
+echo [ Текущий профиль: !name[%choice%]! ]
+echo ==================================================
+echo Сброс предыдущего подключения...
+ovpnconnector.exe stop >nul 2>&1
+timeout /t 2 /nobreak >nul
+
+echo Установка конфигурации...
+ovpnconnector.exe set-config profile "!file[%choice%]!"
+if errorlevel 1 (
+    echo [ОШИБКА] Не удалось применить профиль!
+    pause
+    goto menu
+)
+
+echo Запуск службы VPN...
+ovpnconnector.exe start
+if errorlevel 1 (
+    echo [ОШИБКА] Не удалось запустить службу! Проверьте ovpnconnector.log.
+    pause
+    goto menu
+)
+
+:: --- БЛОК ОЖИДАНИЯ АКТИВАЦИИ АДАПТЕРА (PowerShell вместо WMIC) ---
+echo Ожидание инициализации адаптера (макс. 5 сек)...
+set connected=0
+for /l %%i in (1,1,5) do (
+    if !connected!==0 (
+        powershell -NoProfile -Command "if (Get-NetAdapter | Where-Object { ($_.InterfaceDescription -match 'TAP-Windows|OpenVPN|Wintun') -and ($_.Status -eq 'Up') }) { exit 0 } else { exit 1 }" >nul 2>&1
+        if !errorlevel!==0 (
+            set connected=1
+            echo [ОК] Сетевой адаптер VPN успешно подключен!
+        ) else (
+            timeout /t 1 /nobreak >nul
+        )
+    )
+)
+
+if !connected!==0 (
+    echo [ПРЕДУПРЕЖДЕНИЕ] Адаптер не перешел в статус Up за 5 секунд.
+    echo Проверьте содержимое файла ovpnconnector.log в папке со скриптом.
+)
+
+echo.
+echo --------------------------------------------------
+echo Нажмите любую клавишу, чтобы вернуться в меню...
+pause >nul
+goto menu
+
+:invalid_input
+echo [ОШИБКА] Неверный ввод. Выберите номер из списка.
+timeout /t 2 /nobreak >nul
+goto menu
+
+:disconnect_and_exit
+echo.
+echo Отключение VPN службы...
+ovpnconnector.exe stop >nul 2>&1
+timeout /t 2 /nobreak >nul
+exit /b
