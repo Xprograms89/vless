@@ -1,0 +1,79 @@
+@echo off
+setlocal enabledelayedexpansion
+chcp 65001 >nul
+
+:: Переходим в папку с батником
+cd /d "%~dp0"
+
+:: 1. Проверяем папку Config
+if not exist "%~dp0Config" (
+    echo [ОШИБКА] Папка Config не найдена!
+    pause
+    exit /b
+)
+
+:: 2. Собираем .ovpn файлы
+set count=0
+for %%f in ("%~dp0Config\*.ovpn") do (
+    set /a count+=1
+    set "file[!count!]=%%f"
+    set "name[!count!]=%%~nxf"
+)
+
+if %count%==0 (
+    echo [ОШИБКА] В папке Config нет файлов .ovpn
+    pause
+    exit /b
+)
+
+:: 3. Принудительно ставим службу
+ovpnconnector.exe install >nul 2>&1
+
+set current=1
+
+:loop
+cls
+echo ==================================================
+echo   Переключение VPN-профилей (Всего найдено: %count%)
+echo ==================================================
+echo.
+echo [ Текущий профиль: !name[%current%]! ]
+echo.
+echo Установка конфигурации...
+ovpnconnector.exe set-config profile "!file[%current%]!" >nul
+
+echo Запуск VPN...
+ovpnconnector.exe start >nul
+echo Статус: Подключение запущено в фоне.
+echo.
+echo --------------------------------------------------
+
+if %current% lss %count% (
+    echo Нажмите [ N ] — чтобы переключить на СЛЕДУЮЩИЙ профиль.
+    echo Нажмите [ E ] — чтобы ОТКЛЮЧИТЬ VPN и ВЫЙТИ.
+    echo --------------------------------------------------
+    
+    :: Ждем нажатия N или E (регистр не важен)
+    choice /c ne /n /m "Ваш выбор: "
+    
+    if errorlevel 2 goto :end
+    if errorlevel 1 (
+        echo.
+        echo Отключение текущего VPN...
+        ovpnconnector.exe stop >nul
+        set /a current+=1
+        goto :loop
+    )
+) else (
+    echo Это был ПОСЛЕДНИЙ доступный профиль в папке.
+    echo Нажмите [ E ] — чтобы ОТКЛЮЧИТЬ VPN и ВЫЙТИ.
+    echo --------------------------------------------------
+    choice /c e /n /m "Ваш выбор: "
+    goto :end
+)
+
+:end
+echo.
+echo Полное отключение VPN и выход...
+ovpnconnector.exe stop >nul
+timeout /t 2 >nul
