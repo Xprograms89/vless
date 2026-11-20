@@ -1,0 +1,41 @@
+Microsoft Windows [Version 10.0.19042.631]
+(c) Корпорация Майкрософт (Microsoft Corporation), 2020. Все права защищены.
+
+C:\Users\admin\Downloads>docker start -ai uprock-time
+root@c3f9059140c5:/# WEBKIT_DISABLE_COMPOSITING_MODE=1 DISPLAY=host.docker.internal:0.0 dbus-run-session -- uprock-mining
+2026-11-20T04:28:52Z    INFO    mining-desktop/main.go:46       app version     {"build": 33, "version": "v0.0.38", "commit": "e4157010ff198d8d8edfe89f49c8ce683c41cd39", "built": "2026-07-10T04:52:24Z"}
+2026-11-20T04:28:52Z    INFO    db/migration.go:63      db version      {"version": 1}
+2026-11-20T04:28:52Z    INFO    credentials/store.go:48 using file credential store
+2026-11-20T04:28:52Z    INFO    login/service.go:44     auto login done
+2026-11-20T04:28:52Z    INFO    daemon/server.go:68     IPC server listening
+
+(uprock-mining:11): dbind-WARNING **: 04:28:52.392: Couldn't connect to accessibility bus: Failed to connect to socket /root/.cache/at-spi/bushost.docker.internal_0.0: No such file or directory
+dbus-daemon[10]: [session uid=0 pid=10] Activating service name='org.freedesktop.portal.Desktop' requested by ':1.2' (uid=0 pid=11 comm="uprock-mining ")
+dbus-daemon[10]: [session uid=0 pid=10] Activating service name='org.freedesktop.portal.Documents' requested by ':1.3' (uid=0 pid=30 comm="/usr/libexec/xdg-desktop-portal ")
+dbus-daemon[10]: [session uid=0 pid=10] Activating service name='org.freedesktop.impl.portal.PermissionStore' requested by ':1.4' (uid=0 pid=35 comm="/usr/libexec/xdg-document-portal ")
+dbus-daemon[10]: [session uid=0 pid=10] Successfully activated service 'org.freedesktop.impl.portal.PermissionStore'
+dbus-daemon[10]: [session uid=0 pid=10] Successfully activated service 'org.freedesktop.portal.Documents'
+dbus-daemon[10]: [session uid=0 pid=10] Activating service name='org.freedesktop.impl.portal.desktop.gtk' requested by ':1.3' (uid=0 pid=30 comm="/usr/libexec/xdg-desktop-portal ")
+
+(xdg-desktop-portal-gtk:49): dbind-WARNING **: 04:28:52.514: Couldn't connect to accessibility bus: Failed to connect to socket /root/.cache/at-spi/bushost.docker.internal_0.0: No such file or directory
+
+** (xdg-desktop-portal-gtk:49): WARNING **: 04:28:52.517: error: Could not connect: No such file or directory
+
+dbus-daemon[10]: [session uid=0 pid=10] Successfully activated service 'org.freedesktop.impl.portal.desktop.gtk'
+
+** (/usr/libexec/xdg-desktop-portal:30): WARNING **: 04:28:52.539: Failed to create RealtimeKit proxy: Could not connect: No such file or directory
+
+** (/usr/libexec/xdg-desktop-portal:30): WARNING **: 04:28:52.557: Failed connect to PipeWire: Couldn't connect to PipeWire
+dbus-daemon[10]: [session uid=0 pid=10] Successfully activated service 'org.freedesktop.portal.Desktop'
+2026-11-20T04:28:52Z    INFO    speed/service.go:203    test    {"force": false, "reason": "earning"}
+2026-11-20T04:28:52Z    INFO    httptest/service.go:56  disabled
+2026-11-20T04:28:52Z    ERROR   gui/app.go:105  app error       {"error": "systray error: failed to register: The name org.kde.StatusNotifierWatcher was not provided by any .service files"}
+Overriding existing handler for signal 10. Set JSC_SIGNAL_FOR_GC if you want WebKit to use a different signal
+2026-11-20T04:28:52Z    INFO    speed/service.go:222    starting speed test
+
+** (WebKitWebProcess:67): WARNING **: 04:28:53.141: Can't connect to a11y bus: Could not connect: No such file or directory
+2026-11-20T04:29:03Z    INFO    speed/geoinfo.go:50     fetched geoinfo {"geoinfo": {"IP":"177.185.23.134","Latitude":-21.2453,"Longitude":-44.9997,"CountryCode":"BR","Country":"Brazil","Region":"Minas Gerais","City":"Lavras"}}
+2026-11-20T04:29:27Z    ERROR   speed/download.go:87    download test failed    {"server": "https://edge.uprock.com/v1/", "error": "Get \"https://edge.uprock.com/v1/ping.png\": dial tcp 203.23.179.3:443: connect: connection refused"}
+2026-11-20T04:30:47Z    INFO    speed/service.go:240    finished speed test     {"download": {"Duration":18621358000,"Bytes":333718,"Mbps":0.14336999481992665}, "upload": {"version":1,"received":3145728,"duration_us":18731042,"now":1795149060,"ticket":"33ba93d2d2e2f3e4c722417a629f137164fc72d28a68a985ce5ec4ec97473021","bps":1343535.72,"mbps":1.3}}
+2026-11-20T04:30:55Z    INFO    speed/scoring.go:32     scoring succeeded       {"result": "connectionScore:133.43069614306663  geoScore:300"}
+2026-11-20T04:31:13Z    INFO    speed/service.go:275    speed test sent {"resulted": {"UPTPerHour":0.009651369412094086,"UPTPerGB":0.25083495022303176}}
